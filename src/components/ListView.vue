@@ -41,11 +41,6 @@
     props: ['items', 'filterKey'],
     methods: {
       processImg: processImg
-    },
-    watch: {
-      items(cur) {
-        console.log('%c cur', 'background: red; color: white;', cur)
-      }
     }
   }
 </script>
