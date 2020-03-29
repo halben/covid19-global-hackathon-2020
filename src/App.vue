@@ -6,7 +6,7 @@
       color="primary"
     >
       <div class="d-flex align-center">
-        <h1 @click="$router.push('/')">Opened Local Business Near Me</h1>
+        <img src="./assets/logo.png" width="155" alt="Created my free logo at LogoMakr.com" @click="$router.push('/')" title="Neighborhood Eats">
       </div>
 
       <v-spacer></v-spacer>

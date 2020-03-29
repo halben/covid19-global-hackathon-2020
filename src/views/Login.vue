@@ -1,9 +1,9 @@
 <template>
   <div class="container--fluid">
-    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0">
-      <h1>To get started, please fill out the form</h1>
+    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0" class="mt-10">
+      <h1>Log In</h1>
       <v-form
-        class="d-flex flex-column mt-10"
+        class="d-flex flex-column"
         ref="form"
         v-model="valid"
         lazy-validation
