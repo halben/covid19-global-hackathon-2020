@@ -34,8 +34,9 @@ export default {
     //
   }),
   methods: {
-    onLogout() {
-      this.$store.dispatch('LOG_OUT')
+    async onLogout() {
+      await this.$store.dispatch('LOG_OUT')
+      this.$router.push('/')
     }
   }
 };
