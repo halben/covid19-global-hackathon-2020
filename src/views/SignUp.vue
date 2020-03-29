@@ -37,6 +37,8 @@
           required
         ></v-select>
 
+        <v-file-input label="Upload Business Logo" outlined dense @change="onFileChange"></v-file-input>
+
         <span class="font-weight-light">Office Hours:</span>
         <div class="d-flex flex-row">
           <v-select
@@ -95,10 +97,23 @@
         open: '',
         close: ''
       },
-      opHoursItems: Array.from({length:12},(v,k)=>k+1)
+      opHoursItems: Array.from({length:12},(v,k)=>k+1),
+      fileBits: null
     }),
 
     methods: {
+      onFileChange(File) {
+        const reader = new FileReader()
+        reader.readAsBinaryString(File)
+
+        reader.onload = e => {
+          let bits = e.target.result
+          this.fileBits = {
+            created: Date.now(),
+            data: bits
+          }
+        }
+      },
       async validate () {
         const isValid = this.$refs.form.validate()
 
@@ -109,10 +124,11 @@
             email: this.email,
             businessType: this.select,
             createdAt: Date.now(),
+            logo: this.fileBits,
             active: true
           })
 
-          this.$router.push('/profile')
+          this.$router.push(`/profile/${this.email}`)
         }
       },
     },

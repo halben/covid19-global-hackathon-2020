@@ -1,4 +1,5 @@
 import { dbPromise } from '@/services/db'
+// import Store from '@/store'
 
 const objects  =  {
   USERS: 'users',
@@ -24,6 +25,28 @@ const createUser = async (userModel) => {
   throw new Error('Email already in use. Please try again.')
 }
 
+/**
+ * get a user
+ * @param email
+ * @returns {Promise<void>}
+ */
+const getUser = async (email) => {
+  const db = await dbPromise()
+  const tx = db.transaction(objects.USERS, 'readwrite')
+  const store = tx.objectStore(objects.USERS)
+
+  const userExist = await store.getKey(email)
+
+  if (userExist) {
+    const user = await store.get(email)
+    await tx.done
+    return user
+  } else {
+    throw new Error('Could not find user.')
+  }
+}
+
 export {
-  createUser
+  createUser,
+  getUser
 }

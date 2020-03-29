@@ -19,9 +19,10 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/profile',
+    path: '/profile/:email',
     name: 'profile',
     component: Profile,
+    props: true,
     // eslint-disable-next-line no-unused-vars
     async beforeEnter(to, from, next) {
       const isAuth = store.getters.isAuth
