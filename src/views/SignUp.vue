@@ -22,13 +22,6 @@
           required
         ></v-text-field>
 
-        <v-text-field
-          v-model="businessName"
-          :rules="nameRules"
-          label="Business Name"
-          required
-        ></v-text-field>
-
         <v-select
           v-model="select"
           :items="items"
@@ -36,6 +29,28 @@
           label="Business Type"
           required
         ></v-select>
+
+        <v-text-field
+          v-model="businessName"
+          :rules="nameRules"
+          label="Business Name"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          v-model="address"
+          :rules="nameRules"
+          label="Business Address"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          type="number"
+          v-model="zipCode"
+          :rules="nameRules"
+          label="Business ZipCode"
+          required
+        ></v-text-field>
 
         <div class="text-center" v-if="fileBits && fileBits.data">
           <img :src="processImg(fileBits.data)" style="max-height: 150px">
@@ -66,7 +81,7 @@
         <v-btn
           :disabled="!valid"
           color="success"
-          class="mr-4 mt-10"
+          class="mr-4 mt-10 float-right"
           @click="validate"
         >
           Create Account
@@ -85,8 +100,10 @@
       valid: true,
       name: '',
       businessName: '',
+      address: '',
+      zipCode: '',
       nameRules: [
-        v => !!v || 'Name is required',
+        v => !!v || 'Field is required',
       ],
       email: '',
       emailRules: [
@@ -136,7 +153,11 @@
             createdAt: Date.now(),
             logo: this.fileBits,
             active: true,
-            opHours: this.opHours
+            opHours: this.opHours,
+            address: {
+              address: this.address,
+              zipCode: this.zipCode
+            }
           })
 
           this.$router.push(`/profile/${this.email}`)

@@ -20,13 +20,6 @@
           required
         ></v-text-field>
 
-        <v-text-field
-          v-model="model.businessName"
-          :rules="nameRules"
-          label="Business Name"
-          required
-        ></v-text-field>
-
         <v-select
           v-model="model.businessType"
           :items="items"
@@ -34,6 +27,28 @@
           label="Business Type"
           required
         ></v-select>
+
+        <v-text-field
+          v-model="model.businessName"
+          :rules="nameRules"
+          label="Business Name"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          v-model="model.address.address"
+          :rules="nameRules"
+          label="Business Address"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          type="number"
+          v-model="model.address.zipCode"
+          :rules="nameRules"
+          label="Business ZipCode"
+          required
+        ></v-text-field>
 
         <div class="text-center">
           <img :src="processImg(model.logo.data)" style="max-height: 150px">
@@ -92,7 +107,7 @@
       img: null,
       valid: true,
       nameRules: [
-        v => !!v || 'Name is required',
+        v => !!v || 'Field is required',
       ],
       emailRules: [
         v => !!v || 'E-mail is required',
