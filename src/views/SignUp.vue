@@ -1,0 +1,123 @@
+<template>
+  <div class="container--fluid">
+    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0" class="mt-10">
+      <h1>To get started, please fill out the form</h1>
+      <v-form
+        class="mt-10"
+        ref="form"
+        v-model="valid"
+        lazy-validation
+      >
+        <v-text-field
+          v-model="name"
+          :rules="nameRules"
+          label="Name"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          label="E-mail"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          v-model="businessName"
+          :rules="nameRules"
+          label="Business Name"
+          required
+        ></v-text-field>
+
+        <v-select
+          v-model="select"
+          :items="items"
+          :rules="[v => !!v || 'Item is required']"
+          label="Business Type"
+          required
+        ></v-select>
+
+        <span class="font-weight-light">Office Hours:</span>
+        <div class="d-flex flex-row">
+          <v-select
+            style="width: 3rem;"
+            v-model="opHours['open']"
+            :items="opHoursItems"
+            :rules="[v => !!v || 'Hour is required']"
+            label="Open Hour (AM)"
+            required
+          ></v-select>
+          <v-select
+            class="ml-10"
+            style="width: 3rem;"
+            v-model="opHours['close']"
+            :items="opHoursItems"
+            :rules="[v => !!v || 'Hour is required']"
+            label="Closing Hour (PM)"
+            required
+          ></v-select>
+        </div>
+
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4 mt-10"
+          @click="validate"
+        >
+          Create Account
+        </v-btn>
+      </v-form>
+    </v-col>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "SignUp",
+    data: () => ({
+      valid: true,
+      name: '',
+      businessName: '',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+      ],
+      email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      select: null,
+      items: [
+        'Restaurant',
+        'Other'
+      ],
+      opHours: {
+        open: '',
+        close: ''
+      },
+      opHoursItems: Array.from({length:12},(v,k)=>k+1)
+    }),
+
+    methods: {
+      validate () {
+        const isValid = this.$refs.form.validate()
+
+        if (isValid) {
+          this.$store.dispatch('CREATE_USER', {
+            name: this.name,
+            businessName: this.businessName,
+            email: this.email,
+            businessType: this.select,
+            createdAt: Date.now(),
+            active: true
+          })
+        }
+      },
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>
