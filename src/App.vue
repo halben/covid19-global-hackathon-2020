@@ -10,7 +10,7 @@
       </div>
 
       <v-spacer></v-spacer>
-      <h4 class="font-weight-light" v-if="!isAuth">
+      <h4 class="font-weight-black" v-if="!isAuth">
         Restaurant or business owners? Click
         <router-link to="sign-up" class="black--text">here</router-link></h4>
       <v-btn v-else @click="onLogout">log out</v-btn>
@@ -19,6 +19,10 @@
     <v-content>
       <router-view></router-view>
     </v-content>
+    <v-footer>
+      <v-spacer></v-spacer>
+      <div class="caption">Created by Kou Lor &copy; {{ 2020 }}</div>
+    </v-footer>
   </v-app>
 </template>
 
