@@ -12,8 +12,12 @@
       <v-spacer></v-spacer>
       <h4 class="font-weight-black" v-if="!isAuth">
         Restaurant or business owners? Click
-        <router-link to="sign-up" class="black--text">here</router-link></h4>
-      <v-btn v-else @click="onLogout">log out</v-btn>
+        <router-link to="sign-up" class="black--text">here</router-link>
+      </h4>
+      <template v-else>
+        <v-icon large class="mr-5" @click="onProfile">mdi-account-circle</v-icon>
+        <v-btn @click="onLogout" outlined>log out</v-btn>
+      </template>
     </v-app-bar>
 
     <v-content>
@@ -33,7 +37,7 @@ export default {
   name: 'App',
   components: {},
   computed: {
-    ...mapGetters([ 'isAuth' ])
+    ...mapGetters([ 'isAuth', 'user' ])
   },
   data: () => ({
     //
@@ -42,6 +46,9 @@ export default {
     async onLogout() {
       await this.$store.dispatch('LOG_OUT')
       this.$router.push('/')
+    },
+    onProfile() {
+      this.$router.push(`/profile/${this.user.id}`)
     }
   }
 };
