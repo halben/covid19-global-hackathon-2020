@@ -14,6 +14,7 @@ const dbPromise = async () => {
         if (!database.objectStoreNames.contains('business')) {
           const store = database.createObjectStore('business')
           store.createIndex('userIndex', 'userId', { unique: true })
+          store.createIndex('zipcodeIndex', 'location.zipCode', { unique: false })
         }
     }
   })
