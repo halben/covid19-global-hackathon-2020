@@ -9,7 +9,8 @@ const dbPromise = async () => {
   return await openDB('covid_19_app_db', 1, {
     upgrade(database) {
         if (!database.objectStoreNames.contains('users')) {
-          database.createObjectStore('users')
+          const store = database.createObjectStore('users')
+          store.createIndex('emailIndex', 'email', { unique: true })
         }
         if (!database.objectStoreNames.contains('business')) {
           const store = database.createObjectStore('business')

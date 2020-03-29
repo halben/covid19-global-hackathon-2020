@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import SignUp from '../views/SignUp'
 import Profile from '@/views/Profile'
 import store from '@/store'
+import Login from '@/views/Login'
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,11 @@ const routes = [
     path: '/sign-up',
     name: 'sign-up',
     component: SignUp
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   },
   {
     path: '/profile/:id',

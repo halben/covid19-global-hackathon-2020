@@ -1,7 +1,7 @@
 <template>
   <div class="container--fluid">
     <v-col cols="4" class="mt-10">
-      <label>Enter Zip Code here</label>
+      <label>Enter Zip Code</label>
       <v-text-field
         label="Solo"
         placeholder="Zip Code"

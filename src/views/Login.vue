@@ -9,13 +9,6 @@
         lazy-validation
       >
         <v-text-field
-          v-model="name"
-          :rules="emptyRules"
-          label="Name"
-          required
-        ></v-text-field>
-
-        <v-text-field
           v-model="email"
           :rules="emailRules"
           label="E-mail"
@@ -31,31 +24,22 @@
 
         <v-btn
           :disabled="!valid"
-          color="primary"
           class="mt-10"
+          color="primary"
           @click="validate"
         >
-          Create Account
+          Sign In
         </v-btn>
-        <p class="text-center mt-5">
-          or
-        </p>
-        <p class="text-center">
-          <router-link to="login" class="black--text">Go to Sign In</router-link>
-        </p>
       </v-form>
     </v-col>
   </div>
 </template>
 
 <script>
-  import { v4 as uuidv4 } from 'uuid'
-
   export default {
-    name: "SignUp",
+    name: 'Login',
     data: () => ({
       valid: true,
-      name: '',
       password: null,
       email: '',
       emptyRules: [
@@ -72,17 +56,16 @@
         const isValid = this.$refs.form.validate()
 
         if (isValid) {
-          this.id = uuidv4()
+          try {
+            const user = await this.$store.dispatch('LOG_IN', {
+              email: this.email,
+              password: this.password
+            })
 
-          await this.$store.dispatch('CREATE_USER', {
-            name: this.name,
-            email: this.email,
-            password: this.password,
-            createdAt: Date.now(),
-            id: this.id
-          })
-
-          this.$router.push(`/profile/${this.id}`)
+            this.$router.push(`/profile/${user.id}`)
+          } catch(err) {
+            console.error('Invalid login')
+          }
         }
       },
     },

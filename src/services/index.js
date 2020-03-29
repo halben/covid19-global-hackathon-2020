@@ -6,6 +6,36 @@ const objects  =  {
 }
 
 /**
+ * authenticate a user
+ * @param email
+ * @param password
+ * @returns {Promise<boolean>}
+ */
+const validateLogin = async (email, password) => {
+  if (!email && !password) {
+    throw new Error('Email or password cannot be empty')
+  }
+
+  const db = await dbPromise()
+  const tx = db.transaction(objects.USERS, 'readonly')
+  const store = tx.objectStore(objects.USERS)
+  const index = store.index('emailIndex')
+
+  let user = await index.get(IDBKeyRange.only(email))
+
+  if (user) {
+    let isAuth = user.password === password
+    await tx.done
+    if (isAuth) {
+      return user
+    } else {
+      throw new Error('Incorrect email or password. Please try again.')
+    }
+  } else {
+    throw new Error('Incorrect email or password. Please try again.')
+  }
+}
+/**
  * Create a user
  * @param userModel
  * @returns {Promise<void>}
@@ -95,8 +125,6 @@ const getBusById = async (userId) => {
   const store = tx.objectStore(objects.BUSINESS)
   const index = store.index('userIndex')
 
-  console.log('%c userId', 'background: red; color: white;', userId)
-
   let bus = await index.get(IDBKeyRange.only(userId))
 
   if (bus) {
@@ -148,5 +176,6 @@ export {
   getAllBus,
   updateBus,
   getBusById,
-  searchQuery
+  searchQuery,
+  validateLogin
 }

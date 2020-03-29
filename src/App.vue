@@ -3,6 +3,7 @@
     <v-app-bar
       app
       dark
+      color="primary"
     >
       <div class="d-flex align-center">
         <h1>Opened Local Business Near Me</h1>
@@ -10,8 +11,8 @@
 
       <v-spacer></v-spacer>
       <h4 class="font-weight-light" v-if="!isAuth">
-        Restaurant or business owners? Create an account
-        <router-link to="sign-up">here</router-link></h4>
+        Restaurant or business owners? Click
+        <router-link to="sign-up" class="black--text">here</router-link></h4>
       <v-btn v-else @click="onLogout">log out</v-btn>
     </v-app-bar>
 
