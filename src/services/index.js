@@ -26,6 +26,25 @@ const createUser = async (userModel) => {
 }
 
 /**
+ * update a user
+ * @param userModel
+ * @returns {Promise<void>}
+ */
+const updateUser = async (data) => {
+  const db = await dbPromise()
+  const tx = db.transaction(objects.USERS, 'readwrite')
+  const store = tx.objectStore(objects.USERS)
+
+  const userExist = await store.getKey(data.email)
+
+  if (userExist) {
+    store.put(data, data.email)
+    return tx.done
+  }
+  throw new Error('Failed to update user. Please contact support.')
+}
+
+/**
  * get a user
  * @param email
  * @returns {Promise<void>}
@@ -48,5 +67,6 @@ const getUser = async (email) => {
 
 export {
   createUser,
-  getUser
+  getUser,
+  updateUser
 }

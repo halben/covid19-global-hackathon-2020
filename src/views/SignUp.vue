@@ -37,7 +37,10 @@
           required
         ></v-select>
 
-        <v-file-input label="Upload Business Logo" outlined dense @change="onFileChange"></v-file-input>
+        <div class="text-center" v-if="fileBits && fileBits.data">
+          <img :src="processImg(fileBits.data)" style="max-height: 150px">
+        </div>
+        <v-file-input label="Upload Business Logo" outlined dense @change="onFileChange" accept="image/*" ></v-file-input>
 
         <span class="font-weight-light">Office Hours:</span>
         <div class="d-flex flex-row">
@@ -74,6 +77,8 @@
 </template>
 
 <script>
+  import { processImg } from '@/utils/domUtils'
+
   export default {
     name: "SignUp",
     data: () => ({
@@ -102,16 +107,21 @@
     }),
 
     methods: {
+      processImg: processImg,
       onFileChange(File) {
-        const reader = new FileReader()
-        reader.readAsBinaryString(File)
+        if (File) {
+          const reader = new FileReader()
+          reader.readAsBinaryString(File)
 
-        reader.onload = e => {
-          let bits = e.target.result
-          this.fileBits = {
-            created: Date.now(),
-            data: bits
+          reader.onload = e => {
+            let bits = e.target.result
+            this.fileBits = {
+              created: Date.now(),
+              data: bits
+            }
           }
+        } else {
+          this.fileBits = null
         }
       },
       async validate () {
@@ -125,7 +135,8 @@
             businessType: this.select,
             createdAt: Date.now(),
             logo: this.fileBits,
-            active: true
+            active: true,
+            opHours: this.opHours
           })
 
           this.$router.push(`/profile/${this.email}`)
