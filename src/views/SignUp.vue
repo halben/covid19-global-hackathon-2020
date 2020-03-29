@@ -101,6 +101,7 @@
 
 <script>
   import { processImg } from '@/utils/domUtils'
+  import { v4 as uuidv4 } from 'uuid'
 
   export default {
     name: "SignUp",
@@ -151,6 +152,8 @@
         const isValid = this.$refs.form.validate()
 
         if (isValid) {
+          this.id = uuidv4()
+
           await this.$store.dispatch('CREATE_USER', {
             name: this.name,
             businessName: this.businessName,
@@ -165,10 +168,11 @@
               address: this.address,
               zipCode: this.zipCode
             },
-            created: Date.now()
+            created: Date.now(),
+            id: this.id
           })
 
-          this.$router.push(`/profile/${this.email}`)
+          this.$router.push(`/profile/${this.id}`)
         }
       },
     },

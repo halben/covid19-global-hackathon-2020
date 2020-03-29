@@ -1,5 +1,4 @@
 import { dbPromise } from '@/services/db'
-// import Store from '@/store'
 
 const objects  =  {
   USERS: 'users',
@@ -19,7 +18,7 @@ const createUser = async (userModel) => {
   const userExist = await store.getKey(userModel.email)
 
   if (!userExist) {
-    store.put(userModel, userModel.email)
+    store.put(userModel, userModel.id)
     return tx.done
   }
   throw new Error('Email already in use. Please try again.')

@@ -106,7 +106,7 @@
 
   export default {
     name: "Profile",
-    props: ['email'],
+    props: ['id'],
     computed: {
       ...mapGetters(['user'])
     },
@@ -129,7 +129,7 @@
       opHoursItems: Array.from({length:12},(v,k)=>k+1)
     }),
     async created() {
-      await this.$store.dispatch('GET_USER', this.email)
+      await this.$store.dispatch('GET_USER', this.id)
       this.model = this.user
       console.log('%c this.model', 'background: red; color: white;', this.model)
     },

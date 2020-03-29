@@ -19,7 +19,7 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/profile/:email',
+    path: '/profile/:id',
     name: 'profile',
     component: Profile,
     props: true,
