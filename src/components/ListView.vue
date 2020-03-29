@@ -11,9 +11,15 @@
 
           <v-list-item-content>
             <v-list-item-title class="headline" v-text="item.name"></v-list-item-title>
-            <v-list-item-subtitle v-text="item.location.address"></v-list-item-subtitle>
-            <v-list-item-subtitle v-text="item.location.zipCode"></v-list-item-subtitle>
-            <v-list-item-subtitle v-text="item.phoneNum"></v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Address: {{item.location.address}}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Zip Code: {{item.location.zipCode}}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Phone Number: {{item.phoneNum}}
+            </v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>

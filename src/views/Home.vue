@@ -6,7 +6,9 @@
         label="Solo"
         placeholder="Zip Code"
         solo
+        @keyup="onZipCodeChange"
       ></v-text-field>
+      <span>Found {{allBus.length}} results</span>
     </v-col>
     <v-col cols="12" sm="6" md="6" class="mt-10">
       <list-view :items="allBus"></list-view>
@@ -15,8 +17,9 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+import ListView from '@/components/ListView'
 
-import ListView from "@/components/ListView";
 export default {
   name: 'Home',
   components: { ListView },
@@ -24,8 +27,24 @@ export default {
     allBus: []
   }),
   async created() {
-    const data = await this.$store.dispatch('GET_ALL_BUS')
-    this.allBus = data
+    this.init()
+  },
+  methods: {
+    async init() {
+      const data = await this.$store.dispatch('GET_ALL_BUS')
+      this.allBus = data
+    },
+    onZipCodeChange: debounce(async function(evt) {
+      const str = evt.target.value
+      const data = await this.$store.dispatch('SEARCH', str)
+
+      if (str) {
+        this.allBus = data
+      } else {
+        this.init()
+      }
+
+    }, 500)
   }
 }
 </script>

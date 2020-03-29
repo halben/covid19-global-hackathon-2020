@@ -64,6 +64,10 @@ const getUser = async (email) => {
   }
 }
 
+/**
+ * get a list of business
+ * @returns {Promise<[]>}
+ */
 const getAllBus = async () => {
   const db = await dbPromise()
   const tx = db.transaction(objects.BUSINESS, 'readonly')
@@ -80,6 +84,11 @@ const getAllBus = async () => {
   return data
 }
 
+/**
+ * get business by user id
+ * @param userId
+ * @returns {Promise<DBTypes extends DBSchema ? DBTypes[StoreName]["value"] : any>}
+ */
 const getBusById = async (userId) => {
   const db = await dbPromise()
   const tx = db.transaction(objects.BUSINESS, 'readonly')
@@ -95,6 +104,11 @@ const getBusById = async (userId) => {
   }
 }
 
+/**
+ * Update business profile
+ * @param data
+ * @returns {Promise<void>}
+ */
 const updateBus = async (data) => {
   const db = await dbPromise()
   const tx = db.transaction(objects.BUSINESS, 'readwrite')
@@ -104,11 +118,35 @@ const updateBus = async (data) => {
   return tx.done
 }
 
+/**
+ * search data by key
+ * @param key
+ * @returns {Promise<[]>}
+ * @description search zipcode only for now
+ */
+const searchQuery = async (key) => {
+  const db = await dbPromise()
+  const tx = db.transaction(objects.BUSINESS, 'readonly')
+  const store = tx.objectStore(objects.BUSINESS)
+  const index = store.index('zipcodeIndex')
+
+  let cursor = await index.openCursor(IDBKeyRange.only(key))
+  let data = []
+
+  while (cursor) {
+    data.push(cursor.value)
+    cursor = await cursor.continue();
+  }
+
+  return data
+}
+
 export {
   createUser,
   getUser,
   updateUser,
   getAllBus,
   updateBus,
-  getBusById
+  getBusById,
+  searchQuery
 }

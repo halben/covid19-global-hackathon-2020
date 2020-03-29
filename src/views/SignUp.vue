@@ -31,7 +31,7 @@
 
         <v-btn
           :disabled="!valid"
-          color="success"
+          color="primary"
           class="mr-4 mt-10 float-right"
           @click="validate"
         >

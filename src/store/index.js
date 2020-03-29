@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import {createUser, getAllBus, getBusById, getUser, updateBus, updateUser} from '@/services/index'
+import {createUser, getAllBus, getBusById, getUser, searchQuery, updateBus, updateUser} from '@/services/index'
 
 Vue.use(Vuex)
 
@@ -68,6 +68,14 @@ export default new Vuex.Store({
         return await updateBus(data)
       } catch (err) {
         throw new Error(err.message)
+      }
+    },
+    // eslint-disable-next-line no-unused-vars
+    'SEARCH': async ({ commit, dispatch }, val) => {
+      try {
+        return await searchQuery(val)
+      } catch(err) {
+        throw new Error('Unable to search')
       }
     }
   },
