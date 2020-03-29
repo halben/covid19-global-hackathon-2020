@@ -130,7 +130,7 @@ const searchQuery = async (key) => {
   const store = tx.objectStore(objects.BUSINESS)
   const index = store.index('zipcodeIndex')
 
-  let cursor = await index.openCursor(IDBKeyRange.only(key))
+  let cursor = await index.openCursor(IDBKeyRange.bound(key, key + `\uffff`), 'prev')
   let data = []
 
   while (cursor) {
