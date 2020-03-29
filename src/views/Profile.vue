@@ -221,13 +221,20 @@
         if (isValid) {
           try {
             if (this.businessModel.id) {
-              await this.$store.dispatch('UPDATE_USER_BUS', this.businessModel)
+              await this.$store.dispatch('UPDATE_USER_BUS', {
+                ...this.businessModel,
+                ...{
+                  updatedAt: Date.now()
+                }
+              })
             } else {
               await this.$store.dispatch('UPDATE_USER_BUS', {
                 ...this.businessModel,
                 ...{
                   id: uuidv4(),
-                  userId: this.id
+                  userId: this.id,
+                  createdAt: Date.now(),
+                  updatedAt: Date.now()
                 }
               })
             }

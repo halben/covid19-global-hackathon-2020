@@ -23,10 +23,13 @@
             <v-list-item-subtitle class="font-weight-bold">
               Opened from {{item.opHours.open}}AM - {{item.opHours.close}}PM
             </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              Last Updated {{new Date(item.updatedAt).toLocaleString()}}
+            </v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-icon :color="item.active ? 'green' : 'red'" size="30">mdi-circle</v-icon>
+            <span class="caption">({{item.active ? 'OPEN' : 'CLOSED'}})</span> <v-icon :color="item.active ? 'green' : 'red'" size="30">mdi-circle</v-icon>
           </v-list-item-action>
         </v-list-item>
 
