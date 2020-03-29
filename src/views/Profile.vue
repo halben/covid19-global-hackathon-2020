@@ -50,8 +50,16 @@
           required
         ></v-text-field>
 
+        <v-text-field
+          type="text"
+          v-model="model.phoneNum"
+          :rules="nameRules"
+          label="Business Phone Number"
+          required
+        ></v-text-field>
+
         <div class="text-center">
-          <img :src="processImg(model.logo.data)" style="max-height: 150px">
+          <img :src="processImg(model.logo)" style="max-height: 150px">
         </div>
         <v-file-input label="Upload Business Logo" outlined dense @change="onFileChange" accept="image/*"></v-file-input>
 
@@ -118,8 +126,7 @@
         'Restaurant',
         'Other'
       ],
-      opHoursItems: Array.from({length:12},(v,k)=>k+1),
-      fileBits: null
+      opHoursItems: Array.from({length:12},(v,k)=>k+1)
     }),
     async created() {
       await this.$store.dispatch('GET_USER', this.email)
@@ -138,13 +145,7 @@
           reader.readAsBinaryString(File)
 
           reader.onload = e => {
-            let bits = e.target.result
-            this.fileBits = {
-              created: Date.now(),
-              data: bits
-            }
-
-            this.model.logo = this.fileBits
+            this.model.logo = e.target.result
           }
         }
       },

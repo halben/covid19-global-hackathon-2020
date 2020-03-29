@@ -1,6 +1,6 @@
 <template>
   <div class="container--fluid">
-    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0" class="mt-10">
+    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0">
       <h1>To get started, please fill out the form</h1>
       <v-form
         class="mt-10"
@@ -52,8 +52,16 @@
           required
         ></v-text-field>
 
-        <div class="text-center" v-if="fileBits && fileBits.data">
-          <img :src="processImg(fileBits.data)" style="max-height: 150px">
+        <v-text-field
+          type="text"
+          v-model="phoneNum"
+          :rules="nameRules"
+          label="Business Phone Number"
+          required
+        ></v-text-field>
+
+        <div class="text-center" v-if="fileBits">
+          <img :src="processImg(fileBits)" style="max-height: 150px">
         </div>
         <v-file-input label="Upload Business Logo" outlined dense @change="onFileChange" accept="image/*" ></v-file-input>
 
@@ -102,6 +110,7 @@
       businessName: '',
       address: '',
       zipCode: '',
+      phoneNum: '',
       nameRules: [
         v => !!v || 'Field is required',
       ],
@@ -132,10 +141,7 @@
 
           reader.onload = e => {
             let bits = e.target.result
-            this.fileBits = {
-              created: Date.now(),
-              data: bits
-            }
+            this.fileBits = bits
           }
         } else {
           this.fileBits = null
@@ -154,10 +160,12 @@
             logo: this.fileBits,
             active: true,
             opHours: this.opHours,
+            phoneNum: this.phoneNum,
             address: {
               address: this.address,
               zipCode: this.zipCode
-            }
+            },
+            created: Date.now()
           })
 
           this.$router.push(`/profile/${this.email}`)
