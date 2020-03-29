@@ -66,8 +66,8 @@ const getUser = async (email) => {
 
 const getAllBus = async () => {
   const db = await dbPromise()
-  const tx = db.transaction(objects.USERS, 'readonly')
-  const store = tx.objectStore(objects.USERS)
+  const tx = db.transaction(objects.BUSINESS, 'readonly')
+  const store = tx.objectStore(objects.BUSINESS)
   let cursor = await store.openCursor()
 
   let data = []

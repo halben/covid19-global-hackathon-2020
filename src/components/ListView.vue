@@ -10,9 +10,9 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title class="headline" v-text="item.businessName"></v-list-item-title>
-            <v-list-item-subtitle v-text="item.address.address"></v-list-item-subtitle>
-            <v-list-item-subtitle v-text="item.address.zipCode"></v-list-item-subtitle>
+            <v-list-item-title class="headline" v-text="item.name"></v-list-item-title>
+            <v-list-item-subtitle v-text="item.location.address"></v-list-item-subtitle>
+            <v-list-item-subtitle v-text="item.location.zipCode"></v-list-item-subtitle>
             <v-list-item-subtitle v-text="item.phoneNum"></v-list-item-subtitle>
           </v-list-item-content>
 
