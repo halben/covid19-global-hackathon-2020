@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import {createUser, getUser, updateUser} from '@/services/index'
+import {createUser, getAllBus, getUser, updateUser} from '@/services/index'
 
 Vue.use(Vuex)
 
@@ -32,7 +32,6 @@ export default new Vuex.Store({
     // eslint-disable-next-line no-unused-vars
     'UPDATE_USER': async ({ commit, dispatch }, data) => {
       try {
-        console.log('%c data', 'background: red; color: white;', data)
         await updateUser(data)
       } catch(err) {
         throw new Error(err.message)
@@ -44,6 +43,14 @@ export default new Vuex.Store({
         const user = await getUser(email)
         commit('SET_USER', user)
       } catch(err) {
+        throw new Error(err.message)
+      }
+    },
+    // eslint-disable-next-line no-unused-vars
+    'GET_ALL_BUS': async ({ commit, dispatch }) => {
+      try {
+        return await getAllBus()
+      } catch (err) {
         throw new Error(err.message)
       }
     }

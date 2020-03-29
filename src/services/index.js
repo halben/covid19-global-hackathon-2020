@@ -64,8 +64,25 @@ const getUser = async (email) => {
   }
 }
 
+const getAllBus = async () => {
+  const db = await dbPromise()
+  const tx = db.transaction(objects.USERS, 'readonly')
+  const store = tx.objectStore(objects.USERS)
+  let cursor = await store.openCursor()
+
+  let data = []
+
+  while (cursor) {
+    data.push(cursor.value)
+    cursor = await cursor.continue();
+  }
+
+  return data
+}
+
 export {
   createUser,
   getUser,
-  updateUser
+  updateUser,
+  getAllBus
 }

@@ -8,13 +8,24 @@
         solo
       ></v-text-field>
     </v-col>
+    <v-col cols="12" sm="6" md="6" class="mt-10">
+      <list-view :items="allBus"></list-view>
+    </v-col>
   </div>
 </template>
 
 <script>
 
+import ListView from "@/components/ListView";
 export default {
   name: 'Home',
-  components: {}
+  components: { ListView },
+  data: () => ({
+    allBus: []
+  }),
+  async created() {
+    const data = await this.$store.dispatch('GET_ALL_BUS')
+    this.allBus = data
+  }
 }
 </script>
