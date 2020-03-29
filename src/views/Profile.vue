@@ -120,6 +120,9 @@
         </v-btn>
       </v-form>
     </v-col>
+    <v-snackbar v-model="snackbar" right>
+      {{ snackbarMsg }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -135,6 +138,8 @@
       ...mapGetters(['user'])
     },
     data: () => ({
+      snackbar: false,
+      snackbarMsg: null,
       userModel: null,
       businessModel: {
         name: null,
@@ -199,23 +204,38 @@
         const isValid = this.$refs.profileForm.validate()
 
         if (isValid) {
-          await this.$store.dispatch('UPDATE_USER', this.userModel)
+          try {
+            await this.$store.dispatch('UPDATE_USER', this.userModel)
+
+            this.snackbar = true
+            this.snackbarMsg = 'Profile Updated'
+          } catch(err) {
+            this.snackbar = true
+            this.snackbarMsg = err.message || 'Could not update Profile'
+          }
         }
       },
       async validateBus() {
         const isValid = this.$refs.busForm.validate()
 
         if (isValid) {
-          if (this.businessModel.id) {
-            await this.$store.dispatch('UPDATE_USER_BUS', this.businessModel)
-          } else {
-            await this.$store.dispatch('UPDATE_USER_BUS', {
-              ...this.businessModel,
-              ...{
-                id: uuidv4(),
-                userId: this.id
-              }
-            })
+          try {
+            if (this.businessModel.id) {
+              await this.$store.dispatch('UPDATE_USER_BUS', this.businessModel)
+            } else {
+              await this.$store.dispatch('UPDATE_USER_BUS', {
+                ...this.businessModel,
+                ...{
+                  id: uuidv4(),
+                  userId: this.id
+                }
+              })
+            }
+            this.snackbar = true
+            this.snackbarMsg = 'Business Profile Updated'
+          } catch (err) {
+            this.snackbar = true
+            this.snackbarMsg = err.message || 'Could not update Profile'
           }
         }
       }
