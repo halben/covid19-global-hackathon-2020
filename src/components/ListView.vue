@@ -20,6 +20,9 @@
             <v-list-item-subtitle>
               Phone Number: {{item.phoneNum}}
             </v-list-item-subtitle>
+            <v-list-item-subtitle class="font-weight-bold">
+              Opened from {{item.opHours.open}}AM - {{item.opHours.close}}PM
+            </v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>
