@@ -14,6 +14,11 @@ export default new Vuex.Store({
   },
   actions: {
     // eslint-disable-next-line no-unused-vars
+    'LOG_OUT': ({ commit, dispatch }) => {
+      commit('IS_LOGIN_STATE', false)
+      window.localStorage.removeItem('vuex')
+    },
+    // eslint-disable-next-line no-unused-vars
     'CREATE_USER': async ({ commit, dispatch }, data) => {
       try {
         await createUser(data)

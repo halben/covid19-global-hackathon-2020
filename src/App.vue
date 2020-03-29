@@ -12,6 +12,7 @@
       <h4 class="font-weight-light" v-if="!isAuth">
         Restaurant or business owners? Create an account
         <router-link to="sign-up">here</router-link></h4>
+      <v-btn v-else @click="onLogout">log out</v-btn>
     </v-app-bar>
 
     <v-content>
@@ -32,5 +33,10 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+    onLogout() {
+      this.$store.dispatch('LOG_OUT')
+    }
+  }
 };
 </script>
