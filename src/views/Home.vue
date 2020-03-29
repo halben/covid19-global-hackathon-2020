@@ -1,6 +1,6 @@
 <template>
   <div class="container--fluid">
-    <v-col cols="12" sm="6" md="3" class="mt-10">
+    <v-col cols="4" class="mt-10">
       <label>Enter Zip Code here</label>
       <v-text-field
         label="Solo"
@@ -10,7 +10,7 @@
       ></v-text-field>
       <span>Found {{allBus.length}} results</span>
     </v-col>
-    <v-col cols="12" sm="6" md="6" class="mt-10">
+    <v-col cols="12" class="mt-10">
       <list-view :items="allBus"></list-view>
     </v-col>
   </div>

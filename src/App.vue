@@ -5,7 +5,7 @@
       dark
     >
       <div class="d-flex align-center">
-        <h1>Support Local Business</h1>
+        <h1>Opened Local Business Near Me</h1>
       </div>
 
       <v-spacer></v-spacer>

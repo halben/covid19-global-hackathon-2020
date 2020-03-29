@@ -1,11 +1,11 @@
 <template>
   <div class="container--fluid">
-    <v-list two-line subheader>
+    <v-list three-line subheader>
       <template v-for="(item, index) in items">
         <v-divider v-if="index  === 0" :key="'start'+index"></v-divider>
 
         <v-list-item :key="item.id">
-          <v-list-item-avatar size="80">
+          <v-list-item-avatar size="80" class="mr-10">
             <v-img :src="processImg(item.logo)"></v-img>
           </v-list-item-avatar>
 
