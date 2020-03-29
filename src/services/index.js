@@ -2,7 +2,7 @@ import { dbPromise } from '@/services/db'
 
 const objects  =  {
   USERS: 'users',
-  LOCATIONS: 'locations'
+  BUSINESS: 'business'
 }
 
 /**
@@ -34,10 +34,10 @@ const updateUser = async (data) => {
   const tx = db.transaction(objects.USERS, 'readwrite')
   const store = tx.objectStore(objects.USERS)
 
-  const userExist = await store.getKey(data.email)
+  const userExist = await store.getKey(data.id)
 
   if (userExist) {
-    store.put(data, data.email)
+    store.put(data, data.id)
     return tx.done
   }
   throw new Error('Failed to update user. Please contact support.')
@@ -50,7 +50,7 @@ const updateUser = async (data) => {
  */
 const getUser = async (email) => {
   const db = await dbPromise()
-  const tx = db.transaction(objects.USERS, 'readwrite')
+  const tx = db.transaction(objects.USERS, 'readonly')
   const store = tx.objectStore(objects.USERS)
 
   const userExist = await store.getKey(email)
@@ -80,9 +80,35 @@ const getAllBus = async () => {
   return data
 }
 
+const getBusById = async (userId) => {
+  const db = await dbPromise()
+  const tx = db.transaction(objects.BUSINESS, 'readonly')
+  const store = tx.objectStore(objects.BUSINESS)
+  const index = store.index('userIndex')
+
+  console.log('%c userId', 'background: red; color: white;', userId)
+
+  let bus = await index.get(IDBKeyRange.only(userId))
+
+  if (bus) {
+    return bus
+  }
+}
+
+const updateBus = async (data) => {
+  const db = await dbPromise()
+  const tx = db.transaction(objects.BUSINESS, 'readwrite')
+  const store = tx.objectStore(objects.BUSINESS)
+
+  store.put(data, data.id)
+  return tx.done
+}
+
 export {
   createUser,
   getUser,
   updateUser,
-  getAllBus
+  getAllBus,
+  updateBus,
+  getBusById
 }

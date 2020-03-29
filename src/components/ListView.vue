@@ -17,7 +17,7 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-icon :color="item.active ? 'green' : 'red'" size="30">mdi-check</v-icon>
+            <v-icon :color="item.active ? 'green' : 'red'" size="30">mdi-circle</v-icon>
           </v-list-item-action>
         </v-list-item>
 

@@ -1,27 +1,50 @@
 <template>
   <div class="container--fluid">
-    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0" v-if="model">
+    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0" v-if="userModel">
       <v-form
         class="mt-10"
-        ref="form"
+        ref="profileForm"
         lazy-validation
       >
+        <h3>Update Profile</h3>
         <v-text-field
-          v-model="model.name"
-          :rules="nameRules"
-          label="Name"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          v-model="model.email"
+          disabled
+          :value="userModel.email"
           :rules="emailRules"
           label="E-mail"
           required
         ></v-text-field>
 
+        <v-text-field
+          v-model="userModel.name"
+          :rules="emptyRules"
+          label="Name"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          v-model="userModel.password"
+          :rules="emptyRules"
+          label="Password"
+          required
+        ></v-text-field>
+        <v-btn
+          :disabled="!valid"
+          color="primary"
+          class="mr-4 mt-10"
+          @click="validateProfile"
+        >
+          Update Profile
+        </v-btn>
+      </v-form>
+    </v-col>
+    <v-col cols="12" sm="12" md="4" offset-md="4" offset-sm="0">
+      <h3>Update Business Info</h3>
+      <v-form
+        ref="busForm"
+        lazy-validation>
         <v-select
-          v-model="model.businessType"
+          v-model="businessModel.type"
           :items="items"
           :rules="[v => !!v || 'Item is required']"
           label="Business Type"
@@ -29,37 +52,37 @@
         ></v-select>
 
         <v-text-field
-          v-model="model.businessName"
-          :rules="nameRules"
+          v-model="businessModel.name"
+          :rules="emptyRules"
           label="Business Name"
           required
         ></v-text-field>
 
         <v-text-field
-          v-model="model.address.address"
-          :rules="nameRules"
+          v-model="businessModel.location.address"
+          :rules="emptyRules"
           label="Business Address"
           required
         ></v-text-field>
 
         <v-text-field
           type="number"
-          v-model="model.address.zipCode"
-          :rules="nameRules"
+          v-model="businessModel.location.zipCode"
+          :rules="emptyRules"
           label="Business ZipCode"
           required
         ></v-text-field>
 
         <v-text-field
           type="text"
-          v-model="model.phoneNum"
-          :rules="nameRules"
+          v-model="businessModel.phoneNum"
+          :rules="emptyRules"
           label="Business Phone Number"
           required
         ></v-text-field>
 
         <div class="text-center">
-          <img :src="processImg(model.logo)" style="max-height: 150px">
+          <img :src="processImg(businessModel.logo)" style="max-height: 150px">
         </div>
         <v-file-input label="Upload Business Logo" outlined dense @change="onFileChange" accept="image/*"></v-file-input>
 
@@ -67,7 +90,7 @@
         <div class="d-flex flex-row">
           <v-select
             style="width: 3rem;"
-            v-model="model.opHours['open']"
+            v-model="businessModel.opHours['open']"
             :items="opHoursItems"
             :rules="[v => !!v || 'Hour is required']"
             label="Open Hour (AM)"
@@ -76,7 +99,7 @@
           <v-select
             class="ml-10"
             style="width: 3rem;"
-            v-model="model.opHours['close']"
+            v-model="businessModel.opHours['close']"
             :items="opHoursItems"
             :rules="[v => !!v || 'Hour is required']"
             label="Closing Hour (PM)"
@@ -84,16 +107,16 @@
           ></v-select>
         </div>
         <v-switch
-          v-model="model.active"
-          :label="`Is Open: ${model.active.toString()}`"
+          v-model="businessModel.active"
+          :label="`Is Open: ${businessModel.active.toString()}`"
         ></v-switch>
         <v-btn
           :disabled="!valid"
           color="primary"
-          class="mr-4 mt-10 float-right"
-          @click="validate"
+          class="mr-4 mt-10"
+          @click="validateBus"
         >
-          Update
+          Update Business
         </v-btn>
       </v-form>
     </v-col>
@@ -103,6 +126,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { processImg } from '@/utils/domUtils'
+  import { v4 as uuidv4 } from 'uuid'
 
   export default {
     name: "Profile",
@@ -111,10 +135,25 @@
       ...mapGetters(['user'])
     },
     data: () => ({
-      model: null,
+      userModel: null,
+      businessModel: {
+        name: null,
+        type: null,
+        phoneNum: null,
+        logo: null,
+        location: {
+          address: null,
+          zipCode: null
+        },
+        opHours: {
+          open: '',
+          close: ''
+        },
+        active: false
+      },
       img: null,
       valid: true,
-      nameRules: [
+      emptyRules: [
         v => !!v || 'Field is required',
       ],
       emailRules: [
@@ -130,13 +169,20 @@
     }),
     async created() {
       await this.$store.dispatch('GET_USER', this.id)
-      this.model = this.user
-      console.log('%c this.model', 'background: red; color: white;', this.model)
+      this.userModel = this.user
+
+      const busModel = await this.$store.dispatch('GET_BUS', this.id)
+
+      if (busModel) {
+        this.businessModel = {
+          ...this.businessModel,
+          ...busModel
+        }
+      }
     },
     methods: {
       processImg: processImg,
       render() {
-        console.log('%c this.user', 'background: red; color: white;', this.user)
         this.img = 'data:image/jpeg;base64,' + btoa(this.user.logo.data);
       },
       onFileChange(File) {
@@ -145,15 +191,32 @@
           reader.readAsBinaryString(File)
 
           reader.onload = e => {
-            this.model.logo = e.target.result
+            this.businessModel.logo = e.target.result
           }
         }
       },
-      async validate() {
-        const isValid = this.$refs.form.validate()
+      async validateProfile() {
+        const isValid = this.$refs.profileForm.validate()
 
         if (isValid) {
-          await this.$store.dispatch('UPDATE_USER', this.model)
+          await this.$store.dispatch('UPDATE_USER', this.userModel)
+        }
+      },
+      async validateBus() {
+        const isValid = this.$refs.busForm.validate()
+
+        if (isValid) {
+          if (this.businessModel.id) {
+            await this.$store.dispatch('UPDATE_USER_BUS', this.businessModel)
+          } else {
+            await this.$store.dispatch('UPDATE_USER_BUS', {
+              ...this.businessModel,
+              ...{
+                id: uuidv4(),
+                userId: this.id
+              }
+            })
+          }
         }
       }
     }
