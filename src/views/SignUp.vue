@@ -80,7 +80,6 @@
       businessName: '',
       nameRules: [
         v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
       ],
       email: '',
       emailRules: [
@@ -100,11 +99,11 @@
     }),
 
     methods: {
-      validate () {
+      async validate () {
         const isValid = this.$refs.form.validate()
 
         if (isValid) {
-          this.$store.dispatch('CREATE_USER', {
+          await this.$store.dispatch('CREATE_USER', {
             name: this.name,
             businessName: this.businessName,
             email: this.email,
@@ -112,6 +111,8 @@
             createdAt: Date.now(),
             active: true
           })
+
+          this.$router.push('/profile')
         }
       },
     },
