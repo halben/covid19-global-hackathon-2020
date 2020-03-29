@@ -8,7 +8,7 @@
         solo
         @keyup="onZipCodeChange"
       ></v-text-field>
-      <span>Found {{allBus.length}} results</span>
+      <p class="title">Found <span class="headline" :style="{color: allBus.length ? 'green' : 'red'}">{{allBus.length}}</span> result{{ allBus.length > 1 ? 's' : '' }}</p>
     </v-col>
     <v-col cols="12" class="mt-10">
       <list-view :items="allBus"></list-view>

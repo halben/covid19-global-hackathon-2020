@@ -6,7 +6,7 @@
       color="primary"
     >
       <div class="d-flex align-center">
-        <h1>Opened Local Business Near Me</h1>
+        <h1 @click="$router.push('/')">Opened Local Business Near Me</h1>
       </div>
 
       <v-spacer></v-spacer>
